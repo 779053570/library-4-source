@@ -4,7 +4,12 @@ title = 'library-A4'
 theme = 'PaperMod'
 
 [params]
-  description = '千页成书,万言叙事.'
+  description = '千页成书，万言叙事。'
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowBreadCrumbs = true
+  homeInfoParams =
+    '''这是我在互联网上的一片自留地，存放写下的东西。'''
 
 [module]
   [[module.mounts]]
