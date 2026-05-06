@@ -70,7 +70,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: github-pages
-          path: ./public
+          path: ./artifact-download
+
+      - name: Extract artifact if needed
+        run: |
+          mkdir -p ./public
+          if [ -f ./artifact-download/artifact.tar ]; then
+            tar -xf ./artifact-download/artifact.tar -C ./public
+          else
+            cp -r ./artifact-download/* ./public/
+          fi
 
       - name: Deploy to External Pages Repo
         uses: peaceiris/actions-gh-pages@v3
