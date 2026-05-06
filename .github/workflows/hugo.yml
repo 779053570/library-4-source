@@ -66,6 +66,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Download built site
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./public
+
       - name: Deploy to External Pages Repo
         uses: peaceiris/actions-gh-pages@v3
         with:
