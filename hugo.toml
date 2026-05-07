@@ -5,6 +5,8 @@ theme = 'PaperMod'
 
 buildFuture = true
 
+disablePathToLower = true
+
 [params]
   description = '千页成书，万言叙事。'
   ShowReadingTime = true
