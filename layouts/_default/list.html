@@ -15,6 +15,9 @@
     <div class="post-entry" data-access-level="{{ .Params.access_level | default 0 }}">
       <a href="{{ .Permalink }}">{{ .Title }}</a>
       <span class="post-meta">{{ .Date.Format "2006-01-02" }}</span>
+      {{- with .Params.summary }}
+        <div class="post-summary">{{ . }}</div>
+      {{- end }}
     </div>
   {{- end }}
 </main>

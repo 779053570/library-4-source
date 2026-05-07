@@ -258,3 +258,10 @@ body {
     padding: 1rem;
   }
 }
+
+.post-summary {
+  font-size: 0.85rem;
+  color: #808080;
+  margin-top: 0.3rem;
+  line-height: 1.4;
+}
