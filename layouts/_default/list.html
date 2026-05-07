@@ -1,0 +1,21 @@
+{{- define "main" }}
+<main class="main">
+  {{- if .Title }}
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+  </header>
+  {{- end }}
+
+  {{- $pages := .Pages }}
+  {{- if .IsHome }}
+    {{- $pages = where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+  {{- end }}
+
+  {{- range $pages }}
+    <div class="post-entry" data-access-level="{{ .Params.access_level | default 0 }}">
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
+      <span class="post-meta">{{ .Date.Format "2006-01-02" }}</span>
+    </div>
+  {{- end }}
+</main>
+{{- end }}

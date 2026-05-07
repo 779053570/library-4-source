@@ -27,16 +27,15 @@
   <div class="recent-header">最新归档</div>
   {{ $recent := first 5 (where .Site.RegularPages "Type" "posts") }}
   {{ range $recent }}
-    <div class="post-entry">
-      <a href="{{ .Permalink }}">{{ .Title }}</a>
-      <span class="post-meta">{{ .Date.Format "2006-01-02" }}</span>
-    </div>
+  <div class="post-entry" data-access-level="{{ .Params.access_level | default 0 }}">
+    <a href="{{ .Permalink }}">{{ .Title }}</a>
+    <span class="post-meta">{{ .Date.Format "2006-01-02" }}</span>
+  </div>
   {{ end }}
 
   <div style="margin-top: 2rem;">
     <a href="/posts/" style="color: #808080; font-size: 0.9rem;">查看完整归档 →</a>
   </div>
-
 </div>
 
 <!-- Fuse.js 与搜索逻辑 -->
