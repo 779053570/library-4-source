@@ -1,3 +1,4 @@
+/* ===== 进场动画样式（保留不动） ===== */
 #intro-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -60,4 +61,246 @@
     font-size: 0.8rem;
     padding: 1rem;
   }
+}
+
+/* ===== 以下是 SCP 文档风格 ===== */
+
+/* 全局 */
+body {
+  background-color: #0c0c0c;
+  color: #d4d4d4;
+  font-family: 'Courier New', 'Source Code Pro', 'Noto Sans SC', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* 主容器 */
+.main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* 顶部标题区：紧凑，像档案封面 */
+.home-info {
+  border-bottom: 1px solid #3a3a3a;
+  padding: 1rem 0 0.8rem 0;
+  margin-bottom: 1.5rem;
+}
+.home-info h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #eeeeee;
+  letter-spacing: 0.3rem;
+  margin: 0 0 0.3rem 0;
+}
+.home-info .entry-content {
+  font-size: 0.85rem;
+  color: #808080;
+  letter-spacing: 0.1rem;
+}
+
+/* 导航菜单 */
+#menu {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  margin: 0.8rem 0 1.2rem 0;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+#menu a {
+  color: #909090;
+  text-decoration: none;
+}
+#menu a:hover {
+  color: #ffffff;
+}
+
+/* 文章列表：像文档索引 */
+.post-entry {
+  border-bottom: 1px solid #1a1a1a;
+  padding: 0.6rem 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.post-entry a {
+  font-size: 1rem;
+  color: #cccccc;
+  text-decoration: none;
+  font-weight: 400;
+}
+.post-entry a:hover {
+  color: #ffffff;
+}
+.post-entry .post-meta {
+  color: #606060;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* 文章内页 */
+.post-header {
+  border-bottom: 1px solid #3a3a3a;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.post-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #eeeeee;
+  margin: 0;
+}
+.post-meta {
+  color: #606060;
+  font-size: 0.8rem;
+}
+.post-content h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #dddddd;
+  margin-top: 2rem;
+  border-bottom: 1px solid #2a2a2a;
+  padding-bottom: 0.3rem;
+}
+.post-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #cccccc;
+  margin-top: 1.5rem;
+}
+.post-content p {
+  margin-bottom: 1rem;
+}
+.post-content a {
+  color: #a0a0a0;
+  border-bottom: 1px solid #404040;
+  text-decoration: none;
+}
+.post-content a:hover {
+  color: #ffffff;
+  border-bottom-color: #ffffff;
+}
+
+/* 标签和分类列表 */
+.terms-tags li {
+  display: inline-block;
+  margin: 0 0.8rem 0.6rem 0;
+}
+.terms-tags a {
+  color: #909090;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: 1px solid #2a2a2a;
+  padding: 0.2rem 0.6rem;
+}
+.terms-tags a:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+/* 分页 */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+}
+.pagination a {
+  color: #909090;
+  text-decoration: none;
+}
+.pagination a:hover {
+  color: #ffffff;
+}
+
+/* 页脚 */
+.footer {
+  text-align: center;
+  color: #404040;
+  font-size: 0.8rem;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #1a1a1a;
+}
+
+/* 移动端 */
+@media (max-width: 600px) {
+  .main {
+    padding: 1rem;
+  }
+  .post-entry {
+    flex-direction: column;
+  }
+}
+
+/* ===== 首页索引风格 ===== */
+
+/* 首页专用容器 */
+.home-index {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+/* 搜索框（如果主题启用） */
+.search-form {
+  margin: 2rem auto;
+  max-width: 500px;
+}
+.search-form input {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #d4d4d4;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 1rem;
+  outline: none;
+}
+.search-form input::placeholder {
+  color: #606060;
+}
+
+/* 分类卡片容器 */
+.index-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.index-section-card {
+  border: 1px solid #2a2a2a;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  transition: border-color 0.2s, background-color 0.2s;
+  text-decoration: none;
+  color: #b0b0b0;
+}
+.index-section-card:hover {
+  border-color: #ffffff;
+  background-color: #111111;
+  color: #ffffff;
+}
+.index-section-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.index-section-card .card-count {
+  font-size: 0.8rem;
+  color: #606060;
+}
+
+/* 最新条目 */
+.recent-header {
+  font-size: 0.9rem;
+  color: #707070;
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+  margin: 2rem 0 1rem 0;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 0.5rem;
 }

@@ -8,6 +8,8 @@ buildFuture = true
 disablePathToLower = true
 
 [params]
+  ShowSearch = true
+  fuseOpts = { isCaseSensitive = false, minMatchCharLength = 2, shouldSort = true }
   description = '千页成书，万言叙事。'
   ShowReadingTime = true
   ShowShareButtons = true
@@ -31,3 +33,6 @@ disablePathToLower = true
   name = "归档"
   url = "/posts/"
   weight = 30
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]

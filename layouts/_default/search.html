@@ -1,0 +1,64 @@
+{{ define "main" }}
+<div id="searchbox">
+  <input id="searchInput" type="text" placeholder="输入关键词搜索档案..." aria-label="search" autofocus>
+</div>
+<ul id="searchResults" style="list-style:none; padding:0; margin-top:2rem;"></ul>
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+<script>
+(async function() {
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get('s') || params.get('q') || '';
+  document.getElementById('searchInput').value = query;
+  if (!query) return;
+
+  const res = await fetch('{{ "index.json" | relURL }}');
+  const data = await res.json();
+
+  const fuse = new Fuse(data, {
+    keys: ['title', 'content', 'summary', 'tags', 'categories'],
+    threshold: 0.3,
+    includeScore: true,
+    minMatchCharLength: 2,
+  });
+
+  function renderResults(results) {
+    const container = document.getElementById('searchResults');
+    container.innerHTML = '';
+    if (results.length === 0) {
+      container.innerHTML = '<li style="color:#808080;">未找到相关档案。</li>';
+      return;
+    }
+    results.forEach(r => {
+      const item = r.item;
+      const li = document.createElement('li');
+      li.style.marginBottom = '1.5rem';
+      li.style.paddingBottom = '1rem';
+      li.style.borderBottom = '1px solid #2a2a2a';
+      li.innerHTML = `
+        <a href="${item.permalink}" style="font-size:1.1rem; color:#cccccc; text-decoration:none;">
+          ${item.title || '无标题'}
+        </a>
+        <div style="color:#606060; font-size:0.85rem; margin-top:0.3rem;">
+          ${item.summary ? item.summary.slice(0, 200) + '...' : ''}
+        </div>
+      `;
+      container.appendChild(li);
+    });
+  }
+
+  const results = fuse.search(query);
+  renderResults(results);
+
+  document.getElementById('searchInput').addEventListener('input', function(e) {
+    const newQuery = e.target.value;
+    if (!newQuery) {
+      document.getElementById('searchResults').innerHTML = '';
+      return;
+    }
+    const newResults = fuse.search(newQuery);
+    renderResults(newResults);
+  });
+})();
+</script>
+{{ end }}
