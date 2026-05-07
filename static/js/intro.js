@@ -180,7 +180,7 @@ const homeContent = document.querySelector('.home-info p');
   }
 
   function handleWrong(input) {
-    terminal.textContent += `> ${input}\n> 错误。\n\n`;
+    terminal.textContent += `> ${input}\n> 错误。请注意标点符号。\n\n`;
     wrongAttempts.push(input);
     if (wrongAttempts.length >= readerThreshold) {
       printLines(errorLog, () => {
