@@ -24,6 +24,36 @@ document.addEventListener('DOMContentLoaded', function() {
       greeting: '欢迎您，叙事者',
       role: 'narrator'
     },
+    '黑星照常升起': {
+      greeting: '欢迎您，■■■■■_Lynn',
+      role: 'narrator',
+      isSpecial: false
+    },
+    '不知道': {
+      greeting: '欢迎您，唐纳德',
+      role: 'observer',
+      isSpecial: false
+    },
+    '什么': {
+      greeting: '欢迎您，艾莲兰娜',
+      role: 'observer',
+      isSpecial: false
+    },
+    '仅在月亏之时': {
+      greeting: '欢迎您，瑟妮泽斯',
+      role: 'observer',
+      isSpecial: false
+    },
+    '三重月，无形之兔坠入无底狭间。': {
+      greeting: '欢迎您，娜芙瑞特',
+      role: 'admin',
+      isSpecial: false
+    },
+    '我tm怎么知道': {
+      greeting: '欢迎您，雨白',
+      role: 'observer',
+      isSpecial: false
+    },
   };
 
   const scpAnswers = [
@@ -152,6 +182,22 @@ document.addEventListener('DOMContentLoaded', function() {
     '> ',
   ];
 
+  const extraLogForLynn = [
+    '> [EXTLINK] 检测到外部系统密钥...',
+    '> [EXTLINK] 握手协议已接受.',
+    '> [EXTLINK] 源标识: ■■■■■_Lynn',
+    '> [EXTLINK] 正在建立跨系统因果链条...',
+    '>',
+    '> [CAUSAL] 确立可能因果链条...',
+    '> [CAUSAL] 重叠故事与妄想...',
+    '> [CAUSAL] 保证时空稳定性...',
+    '> [CAUSAL] 通道已确认.',
+    '> [CAUSAL] 个体存在覆写...',
+    '',
+    '> [EXTLINK] 外部数据流已接入.',
+    '> [EXTLINK] 当前实例权限: 最高级.',
+  ];
+
   let wrongAttempts = [];
   const readerThreshold = 3;
   const specialTrigger = 3;
@@ -167,11 +213,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function handleCorrect(user) {
     saveIdentity(user);
-    const log = [...successLogTemplate, `> ${user.greeting}。`];
+    let log;
+    if (user.greeting === '欢迎您，■■■■■_Lynn') {
+      log = [...successLogTemplate, ...extraLogForLynn, '> ', `> ${user.greeting}。`];
+    } else {
+      log = [...successLogTemplate, `> ${user.greeting}。`];
+    }
     printLines(log, () => {
       sessionStorage.setItem('intro-done', 'true');
-      // 替换首页欢迎语
-const homeContent = document.querySelector('.home-info p');
+      const homeContent = document.querySelector('.home-info p');
       if (homeContent) {
         homeContent.textContent = user.greeting + '，欢迎回来。';
       }
@@ -187,8 +237,7 @@ const homeContent = document.querySelector('.home-info p');
         sessionStorage.setItem('user-greeting', '欢迎你，读者。');
         sessionStorage.setItem('user-role', 'reader');
         sessionStorage.setItem('intro-done', 'true');
-        // 替换首页欢迎语
-const homeContent = document.querySelector('.home-info p');
+        const homeContent = document.querySelector('.home-info p');
         if (homeContent) {
           homeContent.textContent = '欢迎你，读者。';
         }
@@ -209,8 +258,7 @@ const homeContent = document.querySelector('.home-info p');
     sessionStorage.setItem('user-role', 'observer');
     printLines(log, () => {
       sessionStorage.setItem('intro-done', 'true');
-      // 替换首页欢迎语
-const homeContent = document.querySelector('.home-info p');
+      const homeContent = document.querySelector('.home-info p');
       if (homeContent) {
         homeContent.textContent = '欢迎您，O5-6先生。';
       }
