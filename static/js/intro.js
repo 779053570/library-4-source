@@ -5,6 +5,62 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   if (sessionStorage.getItem('intro-done')) return;
 
+  // ================= 身份权限系统 =================
+  const users = {
+    'oblivion': {
+      greeting: '欢迎您，■■',
+      role: 'observer',
+      isSpecial: true
+    },
+    '是，因为毁灭已经到来': {
+      greeting: '欢迎您，「叙事」',
+      role: 'admin'
+    },
+    '不，因为存在而存在': {
+      greeting: '欢迎您，洛千秋',
+      role: 'admin'
+    },
+    '天边的鹰衔来了水底的鱼': {
+      greeting: '欢迎您，叙事者',
+      role: 'narrator'
+    },
+  };
+
+  const scpAnswers = [
+    '仅在月亏之时。',
+    '是，但仅在冬日如此。',
+    '否，但麻雀之呼唤美妙至极。',
+    '地狱的猎犬有三头。',
+    '不，迅捷的棕狐狸跃过懒惰的狗',
+    '他曾经嚎叫，但无人铭记。',
+    '黑月为悼念被遗忘的战争的阵亡者而吟唱',
+    '我TM怎么知道。',
+    '蓝月是否贪玩？',
+    '黑月为失去的孩子哀嚎，而存活者拿起武器准备开战。',
+    '万物静谧之时',
+    '且作过眼云烟。',
+    '正为金羽歌颂破晓之时。',
+    '仅在苏醒之时。',
+    '伴随一曲哀歌',
+    '仅在消逝之前',
+    '最后无人知晓',
+    '只对盲者如此',
+    '不在星耀之时',
+    '只在月亏之时',
+    '乌云静默了她的哭泣。群风挤入我们的喉咙群星灼灼放光',
+    '太阳从未收敛笑容，而她的微笑却比阳光更耀眼，但在所爱之物逝去后，她的心变得沉重又僵硬。她想找机会道别，而你会提供这个机会。',
+    '不，仅有低语之声',
+    '怒号无人确晓',
+    '仅在冬日之时',
+    '唯得昨日孽类，穿越明日罪行。',
+    '仅于归乡之时',
+    '否，神曲乐章待续',
+    '分形仍在尖啸',
+  ];
+
+  const specialAnswer = '是的。那是一个美妙的郁金香之夜。尤其是纤细的腰肢与紧致的身材。她的双手铐在栏杆上，她的衣衫凌乱不堪，她的目光愤怒而惊慌，但她却毫无反抗能力。她的哀叹使人迷醉，她的嚎叫令人愉悦，她纤弱而又无助的样子将唤起所有人心中的阴暗与施虐欲。';
+
+  // ================= 构建DOM =================
   const overlay = document.createElement('div');
   overlay.id = 'intro-overlay';
   const terminal = document.createElement('div');
@@ -12,8 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
   overlay.appendChild(terminal);
   document.body.prepend(overlay);
 
-  // ========== 第一段代码：系统启动，等待认证 ==========
-  const phase1 = [
+  const welcomeSequence = [
     '> 启动 Library-A4 数据库系统...',
     '>',
     '> [BOOT] 加载内核模块... OK',
@@ -30,39 +85,164 @@ document.addEventListener('DOMContentLoaded', function() {
     '> [AUTH] 密钥策略: 单密钥认证',
     '> [AUTH] 等待用户输入...',
     '>',
-    '> 数据库就绪，请输入访问密钥...',
+    '> 黑月是否嚎叫？请输入你的回答...',
   ];
 
-  const correctKey = 'oblivion';
-  let phase1Done = false;
+  const errorLog = [
+    '> 错误已达三次。',
+    '> 安全协议降级。',
+    '> [AUTH] 回退至基础访问权限...',
+    '> [AUTH] 分配角色: 读者 (Reader)',
+    '> [CHECK] 运行完整性校验... 失败',
+    '> [CHECK] 检测到未授权访问尝试。',
+    '> [CHECK] 根据自动响应协议... 允许访问。',
+    '> [LOG] 事件已记录。',
+    '>',
+    '> 欢迎你，读者。',
+  ];
 
-  // 打印第一段
-  let lineIdx = 0;
-  let charIdx = 0;
-  const speed = 1;
-  const linePause = 18;
+  const successLogTemplate = [
+    '> [HAL] 重新初始化硬件抽象层...',
+    '> [HAL] 分配内存池...',
+    '> [HAL] 配置并行计算单元...',
+    '> [HAL] 硬件抽象层就绪.',
+    '',
+    '> [STORAGE] 启动分布式存储引擎...',
+    '> [STORAGE] 挂载数据卷: /volumes/narratives',
+    '> [STORAGE] 挂载数据卷: /volumes/characters',
+    '> [STORAGE] 挂载数据卷: /volumes/timelines',
+    '> [STORAGE] 校验磁盘完整性... OK',
+    '> [STORAGE] 存储引擎就绪.',
+    '',
+    '> [DB] 启动数据库服务...',
+    '> [DB] 创建数据库 \'library-a4\'... OK',
+    '> [DB] 创建表 \'characters\' (id, name, race, age, gender, height, weight, attributes)... OK',
+    '> [DB] 创建表 \'timelines\' (id, label, anchor_date, events)... OK',
+    '> [DB] 创建表 \'tags\' (id, name, slug, related_entities)... OK',
+    '> [DB] 创建表 \'narratives\' (id, title, content, author, timestamp, arc_id)... OK',
+    '> [DB] 创建全文索引 \'idx_characters_name\'... OK',
+    '> [DB] 创建全文索引 \'idx_tags_slug\'... OK',
+    '> [DB] 创建关系索引 \'idx_narratives_arc\'... OK',
+    '> [DB] 数据库初始化完成.',
+    '',
+    '> [IMPORT] 扫描待导入数据...',
+    '> [IMPORT] 发现实体: ■■■■■■■■■■条记录',
+    '> [IMPORT] 导入进程数据...OK',
+    '> [IMPORT] 导入故事数据...OK',
+    '> [IMPORT] 导入时间数据...OK',
+    '> [IMPORT] 导入角色数据...OK',
+    '> [IMPORT] 导入时间线数据... OK',
+    '> [IMPORT] 导入标签索引... OK',
+    '> [IMPORT] 导入叙事文本... OK',
+    '> [IMPORT] 数据导入完成.',
+    '',
+    '> [CHECK] 运行一致性校验...',
+    '> [CHECK] 检查外键约束... 0 冲突',
+    '> [CHECK] 检查标签引用完整性... OK',
+    '> [CHECK] 检查时间线锚点...确认',
+    '> [CHECK] 校验叙事链路... 无断裂',
+    '> [CHECK] 一致性校验通过.',
+    '',
+    '> [SERVICE] 启动 API 网关...',
+    '> [SERVICE] 启动静态资源服务... ',
+    '> [SERVICE] 注册健康检查端点... /health',
+    '> [SERVICE] 所有服务已上线.',
+    '',
+    '> 所有模块加载完成.',
+    '> ',
+  ];
 
-  function typePhase1() {
-    if (lineIdx >= phase1.length) {
-      phase1Done = true;
-      showInputLine();
-      return;
+  let wrongAttempts = [];
+  const readerThreshold = 3;
+  const specialTrigger = 3;
+
+  function saveIdentity(user) {
+    sessionStorage.setItem('user-greeting', user.greeting);
+    sessionStorage.setItem('user-role', user.role);
+    if (user.isSpecial) {
+      console.log('欧伯莉丝的凝视已降临，观测者权限已被改写。');
+      sessionStorage.setItem('user-role', 'admin');
     }
-    if (charIdx < phase1[lineIdx].length) {
-      terminal.textContent += phase1[lineIdx].charAt(charIdx);
-      charIdx++;
-      setTimeout(typePhase1, speed);
-    } else {
-      terminal.textContent += '\n';
-      lineIdx++;
-      charIdx = 0;
-      setTimeout(typePhase1, linePause);
-    }
-    overlay.scrollTop = overlay.scrollHeight;
   }
 
-  // 显示输入行
-  function showInputLine() {
+  function handleCorrect(user) {
+    saveIdentity(user);
+    const log = [...successLogTemplate, `> ${user.greeting}。`];
+    printLines(log, () => {
+      sessionStorage.setItem('intro-done', 'true');
+      // 替换首页欢迎语
+const homeContent = document.querySelector('.home-info p');
+      if (homeContent) {
+        homeContent.textContent = user.greeting + '，欢迎回来。';
+      }
+      setTimeout(() => overlay.classList.add('fade-out'), 800);
+    });
+  }
+
+  function handleWrong(input) {
+    terminal.textContent += `> ${input}\n> 错误。\n\n`;
+    wrongAttempts.push(input);
+    if (wrongAttempts.length >= readerThreshold) {
+      printLines(errorLog, () => {
+        sessionStorage.setItem('user-greeting', '欢迎你，读者。');
+        sessionStorage.setItem('user-role', 'reader');
+        sessionStorage.setItem('intro-done', 'true');
+        // 替换首页欢迎语
+const homeContent = document.querySelector('.home-info p');
+        if (homeContent) {
+          homeContent.textContent = '欢迎你，读者。';
+        }
+        setTimeout(() => overlay.classList.add('fade-out'), 800);
+      });
+      return;
+    }
+    terminal.textContent += '> 黑月是否嚎叫？请输入你的回答...\n';
+    setupInputLine();
+  }
+
+  function handleSpecial() {
+    const log = [
+      '> 是的。那是一个美妙的郁金香之夜。尤其是纤细的腰肢与紧致的身材。她的双手铐在栏杆上，她的衣衫凌乱不堪，她的目光愤怒而惊慌，但她却毫无反抗能力。她的哀叹使人迷醉，她的嚎叫令人愉悦，她纤弱而又无助的样子将唤起所有人心中的阴暗与施虐欲。',
+      '> 够了，请停下。欢迎您，O5-6先生。您的专属密匙不必完全输入，毕竟黑月也是会害羞的。',
+    ];
+    sessionStorage.setItem('user-greeting', '欢迎您，O5-6先生。');
+    sessionStorage.setItem('user-role', 'observer');
+    printLines(log, () => {
+      sessionStorage.setItem('intro-done', 'true');
+      // 替换首页欢迎语
+const homeContent = document.querySelector('.home-info p');
+      if (homeContent) {
+        homeContent.textContent = '欢迎您，O5-6先生。';
+      }
+      setTimeout(() => overlay.classList.add('fade-out'), 800);
+    });
+  }
+
+  function printLines(lines, callback) {
+    let lineIndex = 0;
+    let charIndex = 0;
+    const speed = 5;
+    function typeChar() {
+      if (lineIndex >= lines.length) {
+        if (callback) callback();
+        return;
+      }
+      if (charIndex < lines[lineIndex].length) {
+        terminal.textContent += lines[lineIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeChar, speed);
+      } else {
+        terminal.textContent += '\n';
+        lineIndex++;
+        charIndex = 0;
+        setTimeout(typeChar, 5);
+      }
+      overlay.scrollTop = overlay.scrollHeight;
+    }
+    typeChar();
+  }
+
+  function setupInputLine() {
     const inputLine = document.createElement('div');
     inputLine.id = 'intro-input-line';
     const prompt = document.createElement('span');
@@ -72,134 +252,38 @@ document.addEventListener('DOMContentLoaded', function() {
     input.id = 'intro-input';
     input.setAttribute('type', 'text');
     input.setAttribute('autofocus', 'true');
-    input.setAttribute('autocomplete', 'off');
     const cursor = document.createElement('span');
     cursor.id = 'intro-cursor';
     inputLine.appendChild(prompt);
     inputLine.appendChild(input);
     inputLine.appendChild(cursor);
     terminal.appendChild(inputLine);
-    input.focus();
     overlay.scrollTop = overlay.scrollHeight;
-
+    input.focus();
     input.addEventListener('keydown', function(e) {
       if (e.key === 'Enter') {
-        const entered = input.value.trim().toLowerCase();
-        if (entered === correctKey) {
-          inputLine.remove();
-          terminal.textContent += `> ${correctKey}\n`;
-          terminal.textContent += '> 密钥验证通过.\n';
-          terminal.textContent += '> 开始搭建完整的图书馆实例...\n\n';
-          runPhase2();
-        } else {
-          terminal.textContent += `> ${input.value}\n> 密钥无效，请重试。\n\n`;
-          terminal.textContent += '> ';
-          input.value = '';
-          // 重新创建输入行
-          const newInputLine = document.createElement('div');
-          newInputLine.id = 'intro-input-line';
-          const newPrompt = document.createElement('span');
-          newPrompt.textContent = '> ';
-          const newInput = document.createElement('input');
-          newInput.setAttribute('type', 'text');
-          newInput.setAttribute('autofocus', 'true');
-          newInput.setAttribute('autocomplete', 'off');
-          const newCursor = document.createElement('span');
-          newCursor.id = 'intro-cursor';
-          newInputLine.appendChild(newPrompt);
-          newInputLine.appendChild(newInput);
-          newInputLine.appendChild(newCursor);
-          terminal.appendChild(newInputLine);
-          newInput.focus();
-          overlay.scrollTop = overlay.scrollHeight;
-          // 重新绑定事件
-          newInput.addEventListener('keydown', arguments.callee);
+        const answer = input.value.trim();
+        inputLine.remove();
+        if (wrongAttempts.length >= specialTrigger && answer === specialAnswer) {
+          handleSpecial();
+          return;
         }
+        if (users[answer]) {
+          handleCorrect(users[answer]);
+          return;
+        }
+        if (scpAnswers.includes(answer)) {
+          handleCorrect({
+            greeting: '欢迎您，O5成员',
+            role: 'observer',
+            isSpecial: false
+          });
+          return;
+        }
+        handleWrong(answer);
       }
     });
   }
 
-  // ========== 第二段：数据库搭建 ==========
-  function runPhase2() {
-    const phase2 = [
-      '> [HAL] 重新初始化硬件抽象层...',
-      '> [HAL] 分配内存池...',
-      '> [HAL] 配置并行计算单元...',
-      '> [HAL] 硬件抽象层就绪.',
-      '',
-      '> [STORAGE] 启动分布式存储引擎...',
-      '> [STORAGE] 挂载数据卷: /volumes/narratives',
-      '> [STORAGE] 挂载数据卷: /volumes/characters',
-      '> [STORAGE] 挂载数据卷: /volumes/timelines',
-      '> [STORAGE] 校验磁盘完整性... OK',
-      '> [STORAGE] 存储引擎就绪.',
-      '',
-      '> [DB] 启动数据库服务...',
-      '> [DB] 创建数据库 \'library-a4\'... OK',
-      '> [DB] 创建表 \'characters\' (id, name, race, age, gender, height, weight, attributes)... OK',
-      '> [DB] 创建表 \'timelines\' (id, label, anchor_date, events)... OK',
-      '> [DB] 创建表 \'tags\' (id, name, slug, related_entities)... OK',
-      '> [DB] 创建表 \'narratives\' (id, title, content, author, timestamp, arc_id)... OK',
-      '> [DB] 创建全文索引 \'idx_characters_name\'... OK',
-      '> [DB] 创建全文索引 \'idx_tags_slug\'... OK',
-      '> [DB] 创建关系索引 \'idx_narratives_arc\'... OK',
-      '> [DB] 数据库初始化完成.',
-      '',
-      '> [IMPORT] 扫描待导入数据...',
-      '> [IMPORT] 发现实体: ■■■■■■■■■■条记录',
-      '> [IMPORT] 导入进程数据...OK',
-      '> [IMPORT] 导入故事数据...OK',
-      '> [IMPORT] 导入时间数据...OK',
-      '> [IMPORT] 导入角色数据...OK',
-      '> [IMPORT] 导入时间线数据... OK',
-      '> [IMPORT] 导入标签索引... OK',
-      '> [IMPORT] 导入叙事文本... OK',
-      '> [IMPORT] 数据导入完成.',
-      '',
-      '> [CHECK] 运行一致性校验...',
-      '> [CHECK] 检查外键约束... 0 冲突',
-      '> [CHECK] 检查标签引用完整性... OK',
-      '> [CHECK] 检查时间线锚点...确认',
-      '> [CHECK] 校验叙事链路... 无断裂',
-      '> [CHECK] 一致性校验通过.',
-      '',
-      '> [SERVICE] 启动 API 网关...',
-      '> [SERVICE] 启动静态资源服务... ',
-      '> [SERVICE] 注册健康检查端点... /health',
-      '> [SERVICE] 所有服务已上线.',
-      '',
-      '> 所有模块加载完成.',
-      '> ',
-      '> 欢迎您，■■.',
-    ];
-
-    let lineIdx2 = 0;
-    let charIdx2 = 0;
-
-    function typePhase2() {
-      if (lineIdx2 >= phase2.length) {
-        sessionStorage.setItem('intro-done', 'true');
-        setTimeout(() => {
-          overlay.classList.add('fade-out');
-        }, 500);
-        return;
-      }
-      if (charIdx2 < phase2[lineIdx2].length) {
-        terminal.textContent += phase2[lineIdx2].charAt(charIdx2);
-        charIdx2++;
-        setTimeout(typePhase2, speed);
-      } else {
-        terminal.textContent += '\n';
-        lineIdx2++;
-        charIdx2 = 0;
-        setTimeout(typePhase2, linePause);
-      }
-      overlay.scrollTop = overlay.scrollHeight;
-    }
-
-    typePhase2();
-  }
-
-  // 启动一切
-  typePhase1();
+  printLines(welcomeSequence, setupInputLine);
 });
