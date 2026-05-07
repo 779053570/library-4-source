@@ -3,13 +3,17 @@ locale = 'zh-cn'
 title = 'library-A4'
 theme = 'PaperMod'
 
+buildFuture = true
+
 [params]
   description = '千页成书，万言叙事。'
   ShowReadingTime = true
   ShowShareButtons = true
   ShowBreadCrumbs = true
-  homeInfoParams =
-    '''这是我在互联网上的一片自留地，存放写下的东西。'''
+
+[params.homeInfoParams]
+  Title = "library-a4 加载完毕"
+  Content = "欢迎回来,■■"
 
 [module]
   [[module.mounts]]
@@ -33,3 +37,18 @@ theme = 'PaperMod'
   [[module.mounts]]
     source = "archetypes"
     target = "archetypes"
+
+[[menu.main]]
+  name = "分类"
+  url = "/categories/"
+  weight = 10
+
+[[menu.main]]
+  name = "标签"
+  url = "/tags/"
+  weight = 20
+
+[[menu.main]]
+  name = "归档"
+  url = "/posts/"
+  weight = 30
