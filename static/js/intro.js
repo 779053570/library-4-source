@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
       isSpecial: false
     },
     '天启四载春分秋，地落七时谷雨冬。': {
-      greeting: '欢迎您，揭秘者,权限已获取',
-      role: 'admin',
+      greeting: '欢迎您，揭秘者,当前权限:观测者',
+      role: 'observer',
       isSpecial: false
     },
 
