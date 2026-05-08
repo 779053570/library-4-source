@@ -49,6 +49,27 @@ document.addEventListener('DOMContentLoaded', function() {
       role: 'admin',
       isSpecial: false
     },
+    '文字秘钥': {
+      greeting: '欢迎您，狼口',
+      role: 'observer',
+      isSpecial: false
+    },
+    '喵呜?': {
+      greeting: '欢迎您，终末暗影',
+      role: 'observer',
+      isSpecial: false
+    },
+    '天启四载春分秋，地落七时谷雨冬。': {
+      greeting: '欢迎您，揭秘者,权限已获取',
+      role: 'admin',
+      isSpecial: false
+    },
+
+    'only when waning': {
+      greeting: '欢迎您，朔',
+      role: 'observer',
+      isSpecial: false
+    },
     '我tm怎么知道': {
       greeting: '欢迎您，雨白',
       role: 'observer',

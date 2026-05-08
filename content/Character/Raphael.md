@@ -1,3 +1,12 @@
++++
+date = "3510-10-20"
+draft = false
+title = "C02-拉斐尔"
+summary = "七列神其一,扰动丝线的裁决者。"
+categories = ["角色"]
+tags = ["拉斐尔","天使","七列神"]
+access_level = 1
++++
 姓名/称呼：Raphael（拉斐尔）
 
 
