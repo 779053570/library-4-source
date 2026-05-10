@@ -59,6 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
       role: 'observer',
       isSpecial: false
     },
+    '樱落风起云纷飞，雪起刃落见绯灰。': {
+      greeting: '欢迎您，雪见 樱',
+      role: 'admin',
+      isSpecial: false
+    },
     '天启四载春分秋，地落七时谷雨冬。': {
       greeting: '欢迎您，揭秘者,当前权限:观测者',
       role: 'observer',
