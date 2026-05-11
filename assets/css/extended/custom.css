@@ -268,12 +268,13 @@ body {
 
 /* ========== 行内展开模块 ========== */
 .inline-colmod {
-  display: inline;
+  display: block;
+  margin: 0.4em 0;
   position: relative;
 }
 
 .collapsible-link {
-  display: inline;
+  display: block;
   cursor: pointer;
   color: #d4d4d4;
   text-decoration: none;
