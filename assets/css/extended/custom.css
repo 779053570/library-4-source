@@ -265,3 +265,212 @@ body {
   margin-top: 0.3rem;
   line-height: 1.4;
 }
+
+/* ========== 行内展开模块 ========== */
+.inline-colmod {
+  display: inline;
+  position: relative;
+}
+
+.collapsible-link {
+  display: inline;
+  cursor: pointer;
+  color: #d4d4d4;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* 鼠标悬停时颜色加深 */
+.collapsible-link:hover {
+  color: #ffffff;
+  text-decoration: underline;     /* 悬停时出现下划线 */
+}
+
+.collapsible-content {
+  display: none; /* 默认隐藏 */
+}
+
+/* 展开后的内容样式 */
+.collapsible-content.active {
+  display: block;               /* 关键！改为块级，独占一行 */
+  background: #181818;          /* 深色背景，与你站点统一 */
+  border: 1px solid #444;      /* 档案灰边框 */
+  padding: 0.8em 1em;           /* 段落式内边距 */
+  margin: 0.6em 0;              /* 上下留白，与前后文字分开 */
+  color: #ddd;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+/* 可选：为展开内容添加一个前导空格或分隔 */
+.collapsible-content::before {
+  content: " ";
+}
+
+/* ========== SCP 低调警告框（无背景色，文字居中） ========== */
+.scp-notice {
+  border: 1px solid #3a3a3a;          /* 统一的档案细线框 */
+  margin: 1.8em 0;
+  padding: 0.6em 1.2em 0.8em;         /* 统一内边距 */
+  background: transparent;            /* 无背景 */
+  text-align: center;                 /* 全局居中 */
+  font-size: 0.92em;
+  line-height: 1.6;
+  color: #b0b0b0;
+}
+
+.scp-notice-header {
+  font-weight: bold;
+  margin-bottom: 0.3em;
+  font-size: 1em;
+  letter-spacing: 0.08em;
+  color: inherit;                     /* 由父级控制 */
+}
+
+.scp-notice-body {
+  color: inherit;
+}
+
+/* 类型区分：仅改变边框和文字颜色，无背景抢眼 */
+
+/* 一般通知 —— 保留档案灰 */
+.scp-notice.notice {
+  border-color: #4a4a4a;
+  color: #a0a0a0;
+}
+.scp-notice.notice .scp-notice-header {
+  color: #c0c0c0;
+}
+
+/* 信息提示 —— 冷白灰 */
+.scp-notice.info {
+  border-color: #4a5568;
+  color: #9aa5b4;
+}
+.scp-notice.info .scp-notice-header {
+  color: #cbd5e1;
+}
+
+/* 警告 —— 低饱和暗红 */
+.scp-notice.warning {
+  border-color: #5e3a3a;              /* 暗红边框，不刺眼 */
+  color: #c59b9b;                    /* 柔和玫瑰灰 */
+}
+.scp-notice.warning .scp-notice-header {
+  color: #d4a5a5;                    /* 标题微亮 */
+}
+
+/* 危险 —— 更深的暗红紫 */
+.scp-notice.danger {
+  border-color: #4a2e3b;
+  color: #c49aa5;
+}
+.scp-notice.danger .scp-notice-header {
+  color: #d9b2bb;
+}
+
+/* ========== 无边框居中警告 ========== */
+.notice-clean {
+  text-align: center;
+  margin: 2em 0;
+  color: #c59b9b;                /* 低饱和玫瑰灰 */
+}
+
+.notice-clean .notice-title {
+  font-weight: bold;
+  font-size: 0.95em;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3em;
+  color: #d4a5a5;               /* 标题微亮一点 */
+}
+
+.notice-clean .notice-body {
+  margin: 0;
+  font-size: 0.92em;
+  color: #b0a0a0;
+}
+
+/* ========== 弱边框分层卡片警告 ========== */
+.notice-card {
+  border: 1px solid #3a3a3a;       /* 极细暗线 */
+  background: #0e0e0e;             /* 比页面背景稍浅一点点，页面背景是 #0c0c0c */
+  margin: 2em 0;
+  padding: 0.8em 1.4em;
+  text-align: center;
+  font-size: 0.92em;
+  line-height: 1.6;
+  color: #b0b0b0;
+}
+
+.notice-card .notice-title {
+  font-weight: bold;
+  font-size: 0.95em;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3em;
+  color: #c59b9b;
+}
+
+.notice-card .notice-body {
+  color: #aaaaaa;
+}
+
+/* ========== SCP 风格访谈记录 ========== */
+
+/* --- 1. 整体对话框 --- */
+.interview-block {
+  border: 1px solid #3a3a3a;        /* 极淡的灰边框 */
+  background: #0e0e0e;             /* 比页面底色 #0c0c0c 稍亮一点，做出层次感 */
+  padding: 1.8em 2em;              /* 内部留白，让文字不贴边 */
+  margin: 2em 0;                   /* 上下和正文拉开距离 */
+  font-size: 0.95em;
+  line-height: 1.7;
+  color: #b0b0b0;
+}
+
+/* --- 2. 记录头部信息 --- */
+.interview-header p {
+  margin: 0.2em 0;
+  color: #c0c0c0;                  /* 信息文字颜色 */
+}
+
+.interview-header strong {
+  color: #d4d4d4;                  /* 标签加粗但不过亮 */
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+/* --- 3. 对话单行 --- */
+.dialogue-line {
+  margin: 0.6em 0;
+  padding-left: 1.5em;             /* 整体缩进，让对话有层次 */
+  text-indent: -1.5em;             /* 悬挂缩进：让名字突出来 */
+}
+
+.dialogue-line .speaker-name {
+  font-weight: bold;
+  color: #c59b9b;                  /* 低饱和度的玫瑰/暗红色，区分角色 */
+  margin-right: 0.5em;
+}
+
+.dialogue-line .dialogue-text {
+  color: #d4d4d4;                  /* 对话内容颜色稍亮一点 */
+}
+
+/* --- 4. 分割线 --- */
+.scp-divider {
+  border: none;
+  border-top: 1px solid #2a2a2a;   /* 极暗的分割线 */
+  margin: 1.2em 0;
+}
+
+.notice-clean .notice-title {
+  font-size: 2em;   /* 按需调整 */
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  /* 其他你已有的样式 */
+}
+
+.text-center {
+  text-align: center;
+  color: inherit;        /* 确保颜色和周围文字一样 */
+}

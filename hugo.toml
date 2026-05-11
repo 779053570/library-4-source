@@ -36,3 +36,14 @@ disablePathToLower = true
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
+
+[server]
+  [[server.headers]]
+    for = "/css/*.css"
+    [server.headers.values]
+      Content-Type = "text/css; charset=utf-8"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true   # 允许文章中嵌入安全 HTML

@@ -1,0 +1,7 @@
+{{ $type := .Get "type" | default "warning" }}
+<div class="scp-notice {{ $type }}">
+  <div class="scp-notice-header">{{ .Get "title" | default "通知" }}</div>
+  <div class="scp-notice-body">
+    {{ .Inner | markdownify }}
+  </div>
+</div>

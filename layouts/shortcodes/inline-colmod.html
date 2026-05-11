@@ -1,0 +1,9 @@
+<span class="inline-colmod">
+  <span class="collapsible-link"
+        data-hide-text="{{ .Get "hide" | default "" }}">
+    {{ .Get "show" | default "显示详情" }}
+  </span>
+  <div class="collapsible-content">
+    {{ .Inner | markdownify }}
+  </div>
+</span>
