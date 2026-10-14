@@ -1,9 +1,26 @@
+// 把欢迎语写进首页标题下面那一行，并记住它，供刷新后恢复
+function applyHomeGreeting(text) {
+  if (!text) return;
+  const homeContent = document.querySelector('.home-info p');
+  if (homeContent) homeContent.textContent = text;
+}
+
+function setHomeGreeting(text) {
+  try { sessionStorage.setItem('user-home-text', text); } catch (e) {}
+  applyHomeGreeting(text);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const path = window.location.pathname;
   if (path !== '/' && !path.endsWith('/index.html') && path !== '/index.html') {
     return;
   }
-  if (sessionStorage.getItem('intro-done')) return;
+  // 已经进过场：直接把上次的欢迎语恢复回来。
+  // 否则刷新页面后 .home-info p 会退回 hugo.toml 里的默认文案（"欢迎回来,■■"）。
+  if (sessionStorage.getItem('intro-done')) {
+    applyHomeGreeting(sessionStorage.getItem('user-home-text') || sessionStorage.getItem('user-greeting'));
+    return;
+  }
 
   // ================= 身份权限系统 =================
   const users = {
@@ -249,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
       sessionStorage.setItem('intro-done', 'true');
       const homeContent = document.querySelector('.home-info p');
       if (homeContent) {
-        homeContent.textContent = user.greeting + '，欢迎回来。';
+        setHomeGreeting(user.greeting + '，欢迎回来。');
       }
       setTimeout(() => overlay.classList.add('fade-out'), 800);
     });
@@ -265,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.setItem('intro-done', 'true');
         const homeContent = document.querySelector('.home-info p');
         if (homeContent) {
-          homeContent.textContent = '欢迎你，读者。';
+          setHomeGreeting('欢迎你，读者。');
         }
         setTimeout(() => overlay.classList.add('fade-out'), 800);
       });
@@ -286,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
       sessionStorage.setItem('intro-done', 'true');
       const homeContent = document.querySelector('.home-info p');
       if (homeContent) {
-        homeContent.textContent = '欢迎您，O5-6先生。';
+        setHomeGreeting('欢迎您，O5-6先生。');
       }
       setTimeout(() => overlay.classList.add('fade-out'), 800);
     });
