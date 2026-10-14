@@ -16,7 +16,8 @@ enableRobotsTXT = true
   fuseOpts = { isCaseSensitive = false, minMatchCharLength = 2, shouldSort = true }
   description = '千页成书，万言叙事。'
   ShowReadingTime = true
-  ShowShareButtons = true
+  # 关掉文章底部那排分享图标（X / LinkedIn / Reddit / Facebook / WhatsApp / Telegram / HN）
+  ShowShareButtons = false
   ShowBreadCrumbs = true
 
 [params.homeInfoParams]
