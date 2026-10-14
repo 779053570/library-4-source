@@ -1,11 +1,15 @@
-baseURL = '/'
+baseURL = 'https://779053570.github.io/'
 locale = 'zh-cn'
+defaultContentLanguage = 'zh'
 title = 'library-A4'
 theme = 'PaperMod'
 
 buildFuture = true
 
 disablePathToLower = true
+
+# PaperMod 自带 robots.txt 模板（生产环境允许抓取、开发环境 Disallow: /）
+enableRobotsTXT = true
 
 [params]
   ShowSearch = true
@@ -36,12 +40,6 @@ disablePathToLower = true
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
-
-[server]
-  [[server.headers]]
-    for = "/css/*.css"
-    [server.headers.values]
-      Content-Type = "text/css; charset=utf-8"
 
 [markup]
   [markup.goldmark]
