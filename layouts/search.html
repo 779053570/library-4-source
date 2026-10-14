@@ -1,8 +1,8 @@
 {{ define "main" }}
 <div id="searchbox">
-  <input id="searchInput" type="text" placeholder="输入关键词搜索档案..." aria-label="search" autofocus>
+  <input id="searchInput" class="search-page-input" type="text" placeholder="输入关键词搜索档案..." aria-label="search" autofocus>
 </div>
-<ul id="searchResults" style="list-style:none; padding:0; margin-top:2rem;"></ul>
+<ul id="searchResults"></ul>
 
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
 <script>
@@ -26,20 +26,18 @@
     const container = document.getElementById('searchResults');
     container.innerHTML = '';
     if (results.length === 0) {
-      container.innerHTML = '<li style="color:#808080;">未找到相关档案。</li>';
+      container.innerHTML = '<li class="search-empty">未找到相关档案。</li>';
       return;
     }
     results.forEach(r => {
       const item = r.item;
       const li = document.createElement('li');
-      li.style.marginBottom = '1.5rem';
-      li.style.paddingBottom = '1rem';
-      li.style.borderBottom = '1px solid #2a2a2a';
+      li.className = 'search-result';
       li.innerHTML = `
-        <a href="${item.permalink}" style="font-size:1.1rem; color:#cccccc; text-decoration:none;">
+        <a class="search-result-link" href="${item.permalink}">
           ${item.title || '无标题'}
         </a>
-        <div style="color:#606060; font-size:0.85rem; margin-top:0.3rem;">
+        <div class="search-result-summary">
           ${item.summary ? item.summary.slice(0, 200) + '...' : ''}
         </div>
       `;

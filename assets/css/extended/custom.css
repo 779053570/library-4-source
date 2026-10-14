@@ -1,11 +1,93 @@
+/* ============================================================
+   调色板
+   深色为默认；浅色模式下 <html data-theme="light">，整站颜色整体切换。
+   之前所有颜色都写死成深色值，而 PaperMod 在浅色模式会把正文颜色切到
+   var(--content)（浅色下是 #1f1f1f），于是出现"黑字压在黑底上"看不清的问题。
+   ============================================================ */
+:root {
+  --la4-bg: #0c0c0c;
+  --la4-fg: #d4d4d4;
+  --la4-title: #eeeeee;
+  --la4-heading: #dddddd;
+  --la4-subheading: #cccccc;
+  --la4-menu: #909090;
+  --la4-muted: #808080;
+  --la4-dim: #606060;
+  --la4-faint: #404040;
+  --la4-border: #3a3a3a;
+  --la4-border-soft: #2a2a2a;
+  --la4-border-faint: #1a1a1a;
+  --la4-strong-border: #444444;
+  --la4-surface: #181818;
+  --la4-surface-alt: #0e0e0e;
+  --la4-hover-bg: #111111;
+  --la4-input-bg: #1a1a1a;
+  --la4-accent: #c59b9b;
+  --la4-accent-strong: #d4a5a5;
+  --la4-accent-soft: #b0a0a0;
+  --la4-notice-border: #4a4a4a;
+  --la4-notice-fg: #a0a0a0;
+  --la4-notice-head: #c0c0c0;
+  --la4-info-border: #4a5568;
+  --la4-info-fg: #9aa5b4;
+  --la4-info-head: #cbd5e1;
+  --la4-warn-border: #5e3a3a;
+  --la4-warn-fg: #c59b9b;
+  --la4-warn-head: #d4a5a5;
+  --la4-danger-border: #4a2e3b;
+  --la4-danger-fg: #c49aa5;
+  --la4-danger-head: #d9b2bb;
+  /* 启动终端始终是深色的（它是一块"终端屏"，不跟随主题） */
+  --la4-terminal-bg: #050505;
+  --la4-terminal-fg: #ffffff;
+  --la4-terminal-dim: #aaaaaa;
+}
+
+:root[data-theme="light"] {
+  --la4-bg: #f6f5f1;
+  --la4-fg: #2c2c2c;
+  --la4-title: #141414;
+  --la4-heading: #1d1d1d;
+  --la4-subheading: #2a2a2a;
+  --la4-menu: #5f5f5f;
+  --la4-muted: #6b6b6b;
+  --la4-dim: #7a7a7a;
+  --la4-faint: #9a9a9a;
+  --la4-border: #c9c7c0;
+  --la4-border-soft: #dbd9d2;
+  --la4-border-faint: #e6e4dd;
+  --la4-strong-border: #b5b3ab;
+  --la4-surface: #ffffff;
+  --la4-surface-alt: #efeee9;
+  --la4-hover-bg: #eceae4;
+  --la4-input-bg: #ffffff;
+  --la4-accent: #a5565f;
+  --la4-accent-strong: #8f4650;
+  --la4-accent-soft: #7d5a5f;
+  --la4-notice-border: #b9b7b0;
+  --la4-notice-fg: #5a5a5a;
+  --la4-notice-head: #3a3a3a;
+  --la4-info-border: #9fb0c4;
+  --la4-info-fg: #43566b;
+  --la4-info-head: #2f4157;
+  --la4-warn-border: #c9a3a3;
+  --la4-warn-fg: #8f4a4a;
+  --la4-warn-head: #7a3a3a;
+  --la4-danger-border: #c4a3b0;
+  --la4-danger-fg: #7f4356;
+  --la4-danger-head: #6b3546;
+}
+
 /* ===== 进场动画（终端覆盖层） ===== */
 #intro-overlay {
   position: fixed;
   top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: #050505;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;           /* 手机浏览器地址栏收放时更稳 */
+  background: var(--la4-terminal-bg);
   z-index: 9999;
-  color: #ffffff;
+  color: var(--la4-terminal-fg);
   font-family: 'Courier New', monospace;
   font-size: 0.95rem;
   line-height: 1.7;
@@ -31,25 +113,26 @@
   margin-top: 0.5rem;
 }
 #intro-prompt {
-  color: #aaaaaa;
+  color: var(--la4-terminal-dim);
   margin-right: 0.5rem;
   white-space: nowrap;
 }
 #intro-input {
   background: transparent;
   border: none;
-  color: #ffffff;
+  color: var(--la4-terminal-fg);
   font-family: inherit;
   font-size: inherit;
   outline: none;
-  caret-color: #ffffff;
+  caret-color: var(--la4-terminal-fg);
   flex: 1;
+  min-width: 0;              /* 手机上不被 flex 撑破 */
 }
 #intro-cursor {
   display: inline-block;
   width: 0.6rem;
   height: 1.1rem;
-  background: #ffffff;
+  background: var(--la4-terminal-fg);
   animation: blink 1s step-end infinite;
   margin-left: 2px;
 }
@@ -59,8 +142,8 @@
 
 /* ===== SCP 文档风格（全局样式） ===== */
 body {
-  background-color: #0c0c0c !important;
-  color: #d4d4d4;
+  background-color: var(--la4-bg) !important;
+  color: var(--la4-fg);
   font-family: 'Courier New', 'Source Code Pro', 'Noto Sans SC', monospace;
   font-size: 0.95rem;
   line-height: 1.6;
@@ -73,21 +156,82 @@ body {
 
 /* 顶部标题区：紧凑，像档案封面 */
 .home-info {
-  border-bottom: 1px solid #3a3a3a;
-  padding: 1rem 0 0.8rem 0;
+  border-bottom: 1px solid var(--la4-border);
+  padding: 4rem 0 0.8rem 0;
   margin-bottom: 1.5rem;
 }
 .home-info h1 {
   font-size: 2rem;
   font-weight: 600;
-  color: #eeeeee;
+  color: var(--la4-title);
   letter-spacing: 0.3rem;
   margin: 0 0 0.3rem 0;
 }
+.home-title {
+  font-size: 2.5rem;
+  margin: 0;
+}
+.home-subtitle {
+  color: var(--la4-muted);
+  margin-top: 0.5rem;
+}
 .home-info .entry-content {
   font-size: 0.85rem;
-  color: #808080;
+  color: var(--la4-muted);
   letter-spacing: 0.1rem;
+}
+
+/* 首页内嵌搜索 */
+.home-search {
+  margin: 2rem auto;
+  max-width: 600px;
+}
+.home-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--la4-input-bg);
+  border: 1px solid var(--la4-border);
+  border-radius: 4px;
+  color: var(--la4-fg);
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 1rem;
+  outline: none;
+}
+.home-search-input:focus {
+  border-color: var(--la4-accent);
+}
+#index-results {
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto;
+  max-width: 600px;
+  display: none;
+}
+.index-result {
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--la4-border-soft);
+}
+.index-result-link {
+  font-size: 1rem;
+  color: var(--la4-subheading);
+  text-decoration: none;
+}
+.index-result-link:hover {
+  color: var(--la4-title);
+}
+.index-result-summary {
+  color: var(--la4-dim);
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+.home-more {
+  margin-top: 2rem;
+}
+.home-more-link {
+  color: var(--la4-muted);
+  font-size: 0.9rem;
 }
 
 /* 导航菜单 */
@@ -97,19 +241,19 @@ body {
   font-size: 0.9rem;
   margin: 0.8rem 0 1.2rem 0;
   padding-bottom: 0.8rem;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid var(--la4-border-soft);
 }
 #menu a {
-  color: #909090;
+  color: var(--la4-menu);
   text-decoration: none;
 }
 #menu a:hover {
-  color: #ffffff;
+  color: var(--la4-title);
 }
 
 /* 文章列表：像文档索引 */
 .post-entry {
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid var(--la4-border-faint);
   padding: 0.6rem 0;
   margin: 0;
   display: flex;
@@ -119,60 +263,65 @@ body {
 }
 .post-entry a {
   font-size: 1rem;
-  color: #cccccc;
+  color: var(--la4-subheading);
   text-decoration: none;
   font-weight: 400;
 }
 .post-entry a:hover {
-  color: #ffffff;
+  color: var(--la4-title);
 }
 .post-entry .post-meta {
-  color: #606060;
+  color: var(--la4-dim);
   font-size: 0.8rem;
   white-space: nowrap;
 }
 
 /* 文章内页 */
 .post-header {
-  border-bottom: 1px solid #3a3a3a;
+  border-bottom: 1px solid var(--la4-border);
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
 }
 .post-title {
   font-size: 1.6rem;
   font-weight: 600;
-  color: #eeeeee;
+  color: var(--la4-title);
   margin: 0;
 }
 .post-meta {
-  color: #606060;
+  color: var(--la4-dim);
   font-size: 0.8rem;
+}
+/* 正文颜色必须显式指定：主题在浅色模式会把 --content 切成深色，
+   若不覆盖就会出现"黑字压在黑底上" */
+.post-content {
+  color: var(--la4-fg);
 }
 .post-content h2 {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #dddddd;
+  color: var(--la4-heading);
   margin-top: 2rem;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid var(--la4-border-soft);
   padding-bottom: 0.3rem;
 }
 .post-content h3 {
   font-size: 1rem;
   font-weight: 600;
-  color: #cccccc;
+  color: var(--la4-subheading);
   margin-top: 1.5rem;
 }
 .post-content p {
   margin-bottom: 1rem;
 }
 .post-content a {
-  color: #a0a0a0;
-  border-bottom: 1px solid #404040;
+  color: var(--la4-menu);
+  border-bottom: 1px solid var(--la4-faint);
   text-decoration: none;
 }
 .post-content a:hover {
-  color: #ffffff;
-  border-bottom-color: #ffffff;
+  color: var(--la4-title);
+  border-bottom-color: var(--la4-title);
 }
 
 /* 标签和分类列表 */
@@ -181,25 +330,25 @@ body {
   margin: 0 0.8rem 0.6rem 0;
 }
 .terms-tags a {
-  color: #909090;
+  color: var(--la4-menu);
   font-size: 0.9rem;
   text-decoration: none;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--la4-border-soft);
   padding: 0.2rem 0.6rem;
 }
 .terms-tags a:hover {
-  color: #ffffff;
-  border-color: #ffffff;
+  color: var(--la4-title);
+  border-color: var(--la4-title);
 }
 
 /* 页脚 */
 .footer {
   text-align: center;
-  color: #404040;
+  color: var(--la4-faint);
   font-size: 0.8rem;
   margin-top: 3rem;
   padding-top: 1rem;
-  border-top: 1px solid #1a1a1a;
+  border-top: 1px solid var(--la4-border-faint);
 }
 
 /* 首页索引专用 */
@@ -214,17 +363,17 @@ body {
   margin: 2rem 0;
 }
 .index-section-card {
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--la4-border-soft);
   padding: 1.2rem 1rem;
   text-align: center;
   transition: border-color 0.2s, background-color 0.2s;
   text-decoration: none;
-  color: #b0b0b0;
+  color: var(--la4-accent-soft);
 }
 .index-section-card:hover {
-  border-color: #ffffff;
-  background-color: #111111;
-  color: #ffffff;
+  border-color: var(--la4-title);
+  background-color: var(--la4-hover-bg);
+  color: var(--la4-title);
 }
 .index-section-card .card-title {
   font-size: 1.1rem;
@@ -233,19 +382,83 @@ body {
 }
 .index-section-card .card-count {
   font-size: 0.8rem;
-  color: #606060;
+  color: var(--la4-dim);
 }
 .recent-header {
   font-size: 0.9rem;
-  color: #707070;
+  color: var(--la4-dim);
   letter-spacing: 0.15rem;
   text-transform: uppercase;
   margin: 2rem 0 1rem 0;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid var(--la4-border-faint);
   padding-bottom: 0.5rem;
 }
 
-/* 移动端 */
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  /* 头部：原来 #menu 自带 margin/padding/border，把头部撑到 106px；
+     360px 以下菜单换行后更高达 166px（占视口 21%~24%）。这里去掉这些多余占位。 */
+  #menu {
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    gap: 1rem;
+    font-size: 0.85rem;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .header-nav {
+    padding: 0 1rem;
+    column-gap: 0.75rem;
+  }
+  .logo a {
+    font-size: 20px;
+  }
+  /* 首页顶部留白：原来 margin 3rem + padding-top 4rem ≈ 112px 空白 */
+  .home-index {
+    margin-top: 1.5rem;
+  }
+  .home-info {
+    padding: 0.75rem 0 0.6rem 0;
+    margin-bottom: 1rem;
+  }
+  .home-title {
+    font-size: 1.9rem;
+    letter-spacing: 0.16rem;
+  }
+  .home-search {
+    margin: 1.25rem auto;
+  }
+  /* 分类卡片改两列，减少滚动长度 */
+  .index-sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 1.25rem 0;
+  }
+  .index-section-card {
+    padding: 0.9rem 0.5rem;
+  }
+  .index-section-card .card-title {
+    font-size: 1rem;
+  }
+  .recent-header {
+    margin: 1.5rem 0 0.75rem 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .logo a {
+    font-size: 18px;
+  }
+  #menu {
+    gap: 0.7rem;
+    font-size: 0.8rem;
+  }
+  .home-title {
+    font-size: 1.7rem;
+  }
+}
+
 @media (max-width: 600px) {
   .main {
     padding: 1rem;
@@ -261,7 +474,7 @@ body {
 
 .post-summary {
   font-size: 0.85rem;
-  color: #808080;
+  color: var(--la4-muted);
   margin-top: 0.3rem;
   line-height: 1.4;
 }
@@ -276,14 +489,14 @@ body {
 .collapsible-link {
   display: block;
   cursor: pointer;
-  color: #d4d4d4;
+  color: var(--la4-fg);
   text-decoration: none;
   font-weight: bold;
 }
 
 /* 鼠标悬停时颜色加深 */
 .collapsible-link:hover {
-  color: #ffffff;
+  color: var(--la4-title);
   text-decoration: underline;     /* 悬停时出现下划线 */
 }
 
@@ -294,11 +507,11 @@ body {
 /* 展开后的内容样式 */
 .collapsible-content.active {
   display: block;               /* 关键！改为块级，独占一行 */
-  background: #181818;          /* 深色背景，与你站点统一 */
-  border: 1px solid #444;      /* 档案灰边框 */
+  background: var(--la4-surface);  /* 深色背景，与你站点统一 */
+  border: 1px solid var(--la4-strong-border);      /* 档案灰边框 */
   padding: 0.8em 1em;           /* 段落式内边距 */
   margin: 0.6em 0;              /* 上下留白，与前后文字分开 */
-  color: #ddd;
+  color: var(--la4-heading);
   font-size: 0.95em;
   line-height: 1.6;
 }
@@ -310,14 +523,14 @@ body {
 
 /* ========== SCP 低调警告框（无背景色，文字居中） ========== */
 .scp-notice {
-  border: 1px solid #3a3a3a;          /* 统一的档案细线框 */
+  border: 1px solid var(--la4-border);          /* 统一的档案细线框 */
   margin: 1.8em 0;
   padding: 0.6em 1.2em 0.8em;         /* 统一内边距 */
   background: transparent;            /* 无背景 */
   text-align: center;                 /* 全局居中 */
   font-size: 0.92em;
   line-height: 1.6;
-  color: #b0b0b0;
+  color: var(--la4-accent-soft);
 }
 
 .scp-notice-header {
@@ -336,45 +549,45 @@ body {
 
 /* 一般通知 —— 保留档案灰 */
 .scp-notice.notice {
-  border-color: #4a4a4a;
-  color: #a0a0a0;
+  border-color: var(--la4-notice-border);
+  color: var(--la4-notice-fg);
 }
 .scp-notice.notice .scp-notice-header {
-  color: #c0c0c0;
+  color: var(--la4-notice-head);
 }
 
 /* 信息提示 —— 冷白灰 */
 .scp-notice.info {
-  border-color: #4a5568;
-  color: #9aa5b4;
+  border-color: var(--la4-info-border);
+  color: var(--la4-info-fg);
 }
 .scp-notice.info .scp-notice-header {
-  color: #cbd5e1;
+  color: var(--la4-info-head);
 }
 
 /* 警告 —— 低饱和暗红 */
 .scp-notice.warning {
-  border-color: #5e3a3a;              /* 暗红边框，不刺眼 */
-  color: #c59b9b;                    /* 柔和玫瑰灰 */
+  border-color: var(--la4-warn-border);              /* 暗红边框，不刺眼 */
+  color: var(--la4-warn-fg);                    /* 柔和玫瑰灰 */
 }
 .scp-notice.warning .scp-notice-header {
-  color: #d4a5a5;                    /* 标题微亮 */
+  color: var(--la4-warn-head);                    /* 标题微亮 */
 }
 
 /* 危险 —— 更深的暗红紫 */
 .scp-notice.danger {
-  border-color: #4a2e3b;
-  color: #c49aa5;
+  border-color: var(--la4-danger-border);
+  color: var(--la4-danger-fg);
 }
 .scp-notice.danger .scp-notice-header {
-  color: #d9b2bb;
+  color: var(--la4-danger-head);
 }
 
 /* ========== 无边框居中警告 ========== */
 .notice-clean {
   text-align: center;
   margin: 2em 0;
-  color: #c59b9b;                /* 低饱和玫瑰灰 */
+  color: var(--la4-warn-fg);                /* 低饱和玫瑰灰 */
 }
 
 .notice-clean .notice-title {
@@ -382,25 +595,25 @@ body {
   font-size: 0.95em;
   letter-spacing: 0.08em;
   margin-bottom: 0.3em;
-  color: #d4a5a5;               /* 标题微亮一点 */
+  color: var(--la4-warn-head);               /* 标题微亮一点 */
 }
 
 .notice-clean .notice-body {
   margin: 0;
   font-size: 0.92em;
-  color: #b0a0a0;
+  color: var(--la4-accent-soft);
 }
 
 /* ========== 弱边框分层卡片警告 ========== */
 .notice-card {
-  border: 1px solid #3a3a3a;       /* 极细暗线 */
-  background: #0e0e0e;             /* 比页面背景稍浅一点点，页面背景是 #0c0c0c */
+  border: 1px solid var(--la4-border);       /* 极细暗线 */
+  background: var(--la4-surface-alt);             /* 比页面背景稍浅一点点 */
   margin: 2em 0;
   padding: 0.8em 1.4em;
   text-align: center;
   font-size: 0.92em;
   line-height: 1.6;
-  color: #b0b0b0;
+  color: var(--la4-accent-soft);
 }
 
 .notice-card .notice-title {
@@ -408,34 +621,34 @@ body {
   font-size: 0.95em;
   letter-spacing: 0.06em;
   margin-bottom: 0.3em;
-  color: #c59b9b;
+  color: var(--la4-accent);
 }
 
 .notice-card .notice-body {
-  color: #aaaaaa;
+  color: var(--la4-accent-soft);
 }
 
 /* ========== SCP 风格访谈记录 ========== */
 
 /* --- 1. 整体对话框 --- */
 .interview-block {
-  border: 1px solid #3a3a3a;        /* 极淡的灰边框 */
-  background: #0e0e0e;             /* 比页面底色 #0c0c0c 稍亮一点，做出层次感 */
+  border: 1px solid var(--la4-border);        /* 极淡的灰边框 */
+  background: var(--la4-surface-alt);             /* 比页面底色稍亮一点，做出层次感 */
   padding: 1.8em 2em;              /* 内部留白，让文字不贴边 */
   margin: 2em 0;                   /* 上下和正文拉开距离 */
   font-size: 0.95em;
   line-height: 1.7;
-  color: #b0b0b0;
+  color: var(--la4-accent-soft);
 }
 
 /* --- 2. 记录头部信息 --- */
 .interview-header p {
   margin: 0.2em 0;
-  color: #c0c0c0;                  /* 信息文字颜色 */
+  color: var(--la4-notice-head);                  /* 信息文字颜色 */
 }
 
 .interview-header strong {
-  color: #d4d4d4;                  /* 标签加粗但不过亮 */
+  color: var(--la4-fg);                  /* 标签加粗但不过亮 */
   font-weight: bold;
   margin-right: 0.5em;
 }
@@ -449,18 +662,18 @@ body {
 
 .dialogue-line .speaker-name {
   font-weight: bold;
-  color: #c59b9b;                  /* 低饱和度的玫瑰/暗红色，区分角色 */
+  color: var(--la4-accent);                  /* 低饱和度的玫瑰/暗红色，区分角色 */
   margin-right: 0.5em;
 }
 
 .dialogue-line .dialogue-text {
-  color: #d4d4d4;                  /* 对话内容颜色稍亮一点 */
+  color: var(--la4-fg);                  /* 对话内容颜色稍亮一点 */
 }
 
 /* --- 4. 分割线 --- */
 .scp-divider {
   border: none;
-  border-top: 1px solid #2a2a2a;   /* 极暗的分割线 */
+  border-top: 1px solid var(--la4-border-soft);   /* 极暗的分割线 */
   margin: 1.2em 0;
 }
 
@@ -474,4 +687,50 @@ body {
 .text-center {
   text-align: center;
   color: inherit;        /* 确保颜色和周围文字一样 */
+}
+
+/* ========== 搜索结果页 ========== */
+#searchbox {
+  margin: 2rem 0 0;
+}
+.search-page-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--la4-input-bg);
+  border: 1px solid var(--la4-border);
+  border-radius: 4px;
+  color: var(--la4-fg);
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  outline: none;
+}
+.search-page-input:focus {
+  border-color: var(--la4-accent);
+}
+#searchResults {
+  list-style: none;
+  padding: 0;
+  margin-top: 2rem;
+}
+.search-result {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--la4-border-soft);
+}
+.search-result-link {
+  font-size: 1.1rem;
+  color: var(--la4-subheading);
+  text-decoration: none;
+}
+.search-result-link:hover {
+  color: var(--la4-title);
+}
+.search-result-summary {
+  color: var(--la4-dim);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+.search-empty {
+  color: var(--la4-muted);
 }

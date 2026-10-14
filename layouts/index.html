@@ -1,17 +1,17 @@
 {{ define "main" }}
 <div class="home-index">
-  
+
   <!-- 标题区 -->
-  <div class="home-info" style="margin-top: 0; padding-top: 4rem;">
-    <h1 style="font-size: 2.5rem; margin: 0;">{{ .Site.Title }}</h1>
-    <p style="color: #808080; margin-top: 0.5rem;">{{ .Site.Params.homeInfoParams.Content | default .Site.Params.description }}</p>
+  <div class="home-info">
+    <h1 class="home-title">{{ .Site.Title }}</h1>
+    <p class="home-subtitle">{{ .Site.Params.homeInfoParams.Content | default .Site.Params.description }}</p>
   </div>
 
   <!-- 内嵌搜索框 -->
-  <div class="search-form" style="margin: 2rem auto; max-width: 600px;">
-    <input type="text" id="index-search" placeholder="搜索档案..." autocomplete="off" style="width:100%; background:#1a1a1a; border:1px solid #3a3a3a; color:#d4d4d4; font-family:inherit; font-size:0.95rem; padding:0.6rem 1rem; outline:none;">
+  <div class="home-search">
+    <input type="text" id="index-search" class="home-search-input" placeholder="搜索档案..." autocomplete="off">
   </div>
-  <ul id="index-results" style="list-style:none; padding:0; margin:1rem auto; max-width:600px; display:none;"></ul>
+  <ul id="index-results"></ul>
 
   <!-- 分类卡片 -->
   <div class="index-sections">
@@ -33,8 +33,8 @@
   </div>
   {{ end }}
 
-  <div style="margin-top: 2rem;">
-    <a href="/posts/" style="color: #808080; font-size: 0.9rem;">查看完整归档 →</a>
+  <div class="home-more">
+    <a href="/posts/" class="home-more-link">查看完整归档 →</a>
   </div>
 </div>
 
@@ -66,14 +66,12 @@
     results.forEach(r => {
       const item = r.item;
       const li = document.createElement('li');
-      li.style.marginBottom = '1.2rem';
-      li.style.paddingBottom = '0.8rem';
-      li.style.borderBottom = '1px solid #2a2a2a';
+      li.className = 'index-result';
       li.innerHTML = `
-        <a href="${item.permalink}" style="font-size:1rem; color:#cccccc; text-decoration:none;">
+        <a class="index-result-link" href="${item.permalink}">
           ${item.title || '无标题'}
         </a>
-        <div style="color:#606060; font-size:0.8rem; margin-top:0.3rem;">
+        <div class="index-result-summary">
           ${item.summary ? item.summary.slice(0, 120) + '...' : ''}
         </div>
       `;
