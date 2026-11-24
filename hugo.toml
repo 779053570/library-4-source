@@ -34,11 +34,6 @@ enableRobotsTXT = true
   url = "/tags/"
   weight = 20
 
-[[menu.main]]
-  name = "归档"
-  url = "/posts/"
-  weight = 30
-
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 
