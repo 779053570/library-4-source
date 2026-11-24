@@ -1,0 +1,11 @@
+{{- /* 搜索索引：覆盖主题的 index.json。
+     1. 补上 tags / categories 字段，让按标签、分类搜索真正可用；
+     2. 只收录 access_level = 0 的公开文章 —— 锁定内容（access_level > 0）
+        完全不出现在索引里，避免搜索/下载 index.json 泄露全文（关联 P0）。 */ -}}
+{{- $.Scratch.Add "index" slice -}}
+{{- range site.RegularPages -}}
+    {{- if and (not .Params.searchHidden) (ne .Layout `archives`) (ne .Layout `search`) (le (int (.Params.access_level | default 0)) 0) -}}
+    {{- $.Scratch.Add "index" (dict "title" .Title "content" .Plain "permalink" .Permalink "summary" .Summary "tags" .Params.tags "categories" .Params.categories) -}}
+    {{- end -}}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}
