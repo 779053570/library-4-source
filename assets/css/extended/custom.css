@@ -734,3 +734,34 @@ body {
 .search-empty {
   color: var(--la4-muted);
 }
+
+/* ============================================================
+   仅主界面字体颜色：深色纯白 / 浅色纯黑
+   范围用 .home-index（首页内容区）和 body:has(.home-index)（首页的
+   头部菜单/logo、页脚）严格限定在主界面，其他页面完全不动。
+   ============================================================ */
+:root {
+  --home-ink: #ffffff;
+}
+:root[data-theme="light"] {
+  --home-ink: #000000;
+}
+
+.home-index .home-title,
+.home-index .home-subtitle,
+.home-index .home-search-input,
+.home-index .index-section-card,
+.home-index .index-section-card .card-title,
+.home-index .index-section-card .card-count,
+.home-index .index-result-link,
+.home-index .index-result-summary,
+body:has(.home-index) .logo a,
+body:has(.home-index) #menu a,
+body:has(.home-index) #menu a:hover,
+body:has(.home-index) .footer {
+  color: var(--home-ink);
+}
+.home-index .index-section-card:hover {
+  color: var(--home-ink);
+  border-color: var(--home-ink);
+}
